@@ -4,6 +4,7 @@ import org.springframework.dao.DataAccessException;
 import ua.hildi.petclinicv2.model.*;
 
 import java.util.Collection;
+import java.util.Optional;
 
 public interface ClinicService {
 
@@ -15,7 +16,7 @@ public interface ClinicService {
 
     public UserProfile createUserProfile(User user);
 
-    public Owner findOwnerById(long id) throws DataAccessException;
+    public Optional<Owner> findOwnerById(long id) throws DataAccessException;
 
     public void saveOwner(Owner owner) throws DataAccessException;
 
@@ -24,7 +25,7 @@ public interface ClinicService {
     public Collection<Owner> findOwners() throws DataAccessException;
 
     // Pet
-    public Pet findPetById(long id) throws DataAccessException;
+    public Optional<Pet> findPetById(long id) throws DataAccessException;
 
     public void savePet(Pet pet) throws DataAccessException;
 

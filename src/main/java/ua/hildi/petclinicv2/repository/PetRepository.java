@@ -1,13 +1,17 @@
 package ua.hildi.petclinicv2.repository;
 
 import org.springframework.dao.DataAccessException;
-import org.springframework.data.repository.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import ua.hildi.petclinicv2.model.Pet;
 
-public interface PetRepository extends Repository<Pet, Long> {
+import java.util.Optional;
 
-    Pet findById(Long id) throws DataAccessException;
+@Repository
+public interface PetRepository extends JpaRepository<Pet, Long> {
 
-    void save(Pet pet) throws DataAccessException;
+    Optional<Pet> findById(Long id) throws DataAccessException;
+
+    Pet save(Pet pet) throws DataAccessException;
 
 }

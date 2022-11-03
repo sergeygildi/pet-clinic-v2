@@ -1,5 +1,6 @@
 package ua.hildi.petclinicv2.repository;
 
+import org.springframework.stereotype.Repository;
 import ua.hildi.petclinicv2.model.Message;
 
 import java.util.Collection;
@@ -7,6 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicLong;
 
+@Repository
 public class InMemoryMessageRepository implements MessageRepository {
 
     private static final AtomicLong counter = new AtomicLong();

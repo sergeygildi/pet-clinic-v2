@@ -37,7 +37,7 @@ public class PetController {
 
     @GetMapping(value = "/owners/{ownerId}/pets/new")
     public String initCreationForm(@PathVariable("ownerId") int ownerId, Model model) {
-        Owner owner = this.clinicService.findOwnerById(ownerId);
+        Owner owner = this.clinicService.findOwnerById(ownerId).get();
         Pet pet = new Pet();
         owner.addPet(pet);
         model.addAttribute("pet", pet);
@@ -57,7 +57,7 @@ public class PetController {
 
     @GetMapping(value = "/owners/*/pets/{petId}/edit")
     public String initUpdateForm(@PathVariable("petId") int petId, Model model) {
-        Pet pet = this.clinicService.findPetById(petId);
+        Pet pet = this.clinicService.findPetById(petId).get();
         model.addAttribute("pet", pet);
         return "pets/petForm";
     }

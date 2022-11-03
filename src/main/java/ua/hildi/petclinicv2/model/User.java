@@ -1,14 +1,11 @@
 package ua.hildi.petclinicv2.model;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Hibernate;
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.binding.message.MessageBuilder;
-import org.springframework.binding.message.MessageContext;
-import org.springframework.binding.validation.ValidationContext;
+import org.hibernate.validator.internal.engine.validationcontext.ValidationContext;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -28,146 +25,146 @@ import java.util.Objects;
 @ToString
 public class User extends BaseEntity implements UserDetails {
 
-	@Serial
-	private static final long serialVersionUID = 2002390446280945447L;
+    @Serial
+    private static final long serialVersionUID = 2002390446280945447L;
 
-	@Column(unique = true)
-	private String username;
+    @Column(unique = true)
+    private String username;
 
-	@Column
-	@Size(min = 5)
-	private String password;
+    @Column
+    @Size(min = 5)
+    private String password;
 
-	@Transient
-	private String uiPassword;
+    @Transient
+    private String uiPassword;
 
-	@Transient
-	private String verifyPassword;
+    @Transient
+    private String verifyPassword;
 
-	@Column(unique = true)
-	private String email;
+    @Column(unique = true)
+    private String email;
 
-	@Column
-	private String name;
+    @Column
+    private String name;
 
-	@Column(name = "account_expired")
-	private boolean accountExpired = false;
+    @Column(name = "account_expired")
+    private boolean accountExpired = false;
 
-	@Column(name = "account_locked")
-	private boolean accountLocked = false;
+    @Column(name = "account_locked")
+    private boolean accountLocked = false;
 
-	@Column(name = "credentials_expired")
-	private boolean credentialsExpired = false;
+    @Column(name = "credentials_expired")
+    private boolean credentialsExpired = false;
 
-	@Column
-	private boolean enabled = true;
+    @Column
+    private boolean enabled = true;
 
-	@Transient
-	private boolean passwordEncrypted = true;
+    @Transient
+    private boolean passwordEncrypted = true;
 
-	@Transient
-	private boolean verifyPasswordEncrypted = true;
+    @Transient
+    private boolean verifyPasswordEncrypted = true;
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "user_authorities", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "authority_id"))
-	private Collection<Authority> authorities;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_authorities", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "authority_id"))
+    private Collection<Authority> authorities;
 
-	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-	@ToString.Exclude
-	private UserProfile userProfile;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private UserProfile userProfile;
 
-	public User() {
-		passwordEncrypted = false;
-		verifyPasswordEncrypted = false;
-	}
+    public User() {
+        passwordEncrypted = false;
+        verifyPasswordEncrypted = false;
+    }
 
-	public User(String username, String password, String name) {
-		this.username = username;
-		this.password = password;
-		this.name = name;
-	}
+    public User(String username, String password, String name) {
+        this.username = username;
+        this.password = password;
+        this.name = name;
+    }
 
-	public void setUiPassword(String uiPassword) {
-		this.uiPassword = uiPassword;
-		setPassword(new BCryptPasswordEncoder().encode(uiPassword));
-	}
+    public void setUiPassword(String uiPassword) {
+        this.uiPassword = uiPassword;
+        setPassword(new BCryptPasswordEncoder().encode(uiPassword));
+    }
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return authorities;
-	}
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
 
-	public boolean hasAuthority(String targetAuthority) {
-		if (targetAuthority == null) {
-			return false;
-		}
-		if (authorities == null) {
-			log.warn("authorities is null for user " + this);
-		}
+    public boolean hasAuthority(String targetAuthority) {
+        if (targetAuthority == null) {
+            return false;
+        }
+        if (authorities == null) {
+            log.warn("authorities is null for user " + this);
+        }
 
-		for (Authority authority : authorities) {
-			if (targetAuthority.equals(authority.getAuthority())) {
-				return true;
-			}
-		}
+        for (Authority authority : authorities) {
+            if (targetAuthority.equals(authority.getAuthority())) {
+                return true;
+            }
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	public void addAuthority(Authority authority) {
-		if (authority == null) {
-			return;
-		}
-		if (authorities == null) {
-			log.warn("authorities is null for user " + this);
-			authorities = new ArrayList<>();
-		}
+    public void addAuthority(Authority authority) {
+        if (authority == null) {
+            return;
+        }
+        if (authorities == null) {
+            log.warn("authorities is null for user " + this);
+            authorities = new ArrayList<>();
+        }
 
-		authorities.add(authority);
-	}
+        authorities.add(authority);
+    }
 
-	@Override
-	public boolean isAccountNonExpired() {
-		return !accountExpired;
-	}
+    @Override
+    public boolean isAccountNonExpired() {
+        return !accountExpired;
+    }
 
-	@Override
-	public boolean isAccountNonLocked() {
-		return !accountLocked;
-	}
+    @Override
+    public boolean isAccountNonLocked() {
+        return !accountLocked;
+    }
 
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return !credentialsExpired;
-	}
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return !credentialsExpired;
+    }
 
-	@Override
-	public boolean isEnabled() {
-		return enabled;
-	}
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
 
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
-	public void validateCreateUser(ValidationContext context) {
-		MessageContext messages = context.getMessageContext();
-		if (!StringUtils.equals(uiPassword, verifyPassword)) {
-			messages.addMessage(new MessageBuilder().error().source("password").source("verifyPassword")
-					.defaultText("Passwords must be the same.").build());
-		}
-	}
+    public void validateCreateUser(ValidationContext context) {
+        //TODO
+//        MessageContext messages = context.getMessageContext();
+//        if (!StringUtils.equals(uiPassword, verifyPassword)) {
+//            messages.addMessage(new MessageBuilder().error().source("password").source("verifyPassword").defaultText("Passwords must be the same.").build());
+//        }
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-		User user = (User) o;
-		return id != null && Objects.equals(id, user.id);
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        User user = (User) o;
+        return id != null && Objects.equals(id, user.id);
+    }
 
-	@Override
-	public int hashCode() {
-		return getClass().hashCode();
-	}
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

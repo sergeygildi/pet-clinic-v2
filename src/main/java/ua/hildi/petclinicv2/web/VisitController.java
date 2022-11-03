@@ -13,6 +13,8 @@ import ua.hildi.petclinicv2.model.Visit;
 import ua.hildi.petclinicv2.service.ClinicService;
 
 import javax.validation.Valid;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 @Controller
 @SessionAttributes("visit")
@@ -32,7 +34,8 @@ public class VisitController {
 
     @GetMapping(value = "/owners/*/pets/{petId}/visits/new")
     public String initNewVisitForm(@PathVariable("petId") int petId, Model model) {
-        Pet pet = this.clinicService.findPetById(petId);
+        Pet pet = this.clinicService.findPetById(petId)
+                .orElseGet(Pet::new);
         Visit visit = new Visit();
         pet.addVisit(visit);
         model.addAttribute("visit", visit);
@@ -53,7 +56,9 @@ public class VisitController {
     @GetMapping(value = "/owners/*/pets/{petId}/visits")
     public ModelAndView showVisits(@PathVariable int petId) {
         ModelAndView mav = new ModelAndView("visitList");
-        mav.addObject("visits", this.clinicService.findPetById(petId).getVisits());
+        Pet pet = this.clinicService.findPetById(petId)
+                .orElseGet(Pet::new);
+        mav.addObject("visits", pet.getVisits());
         return mav;
     }
 

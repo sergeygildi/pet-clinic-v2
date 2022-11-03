@@ -94,7 +94,7 @@ public class OwnerController {
 
     @GetMapping(value = "/{ownerId}/edit")
     public String initUpdateOwner(@PathVariable("ownerId") int ownerId, Model model) {
-        Owner owner = this.clinicService.findOwnerById(ownerId);
+        Owner owner = this.clinicService.findOwnerById(ownerId).get();
         model.addAttribute(owner);
         return "owners/ownerForm";
     }

@@ -9,6 +9,7 @@ import ua.hildi.petclinicv2.model.*;
 import ua.hildi.petclinicv2.repository.*;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @Service("clinicService")
 public class ClinicServiceImpl implements ClinicService {
@@ -42,7 +43,7 @@ public class ClinicServiceImpl implements ClinicService {
 
     @Override
     @Transactional(readOnly = true)
-    public Owner findOwnerById(long id) throws DataAccessException {
+    public Optional<Owner> findOwnerById(long id) throws DataAccessException {
         return ownerRepository.findById(id);
     }
 
@@ -72,7 +73,7 @@ public class ClinicServiceImpl implements ClinicService {
 
     @Override
     @Transactional(readOnly = true)
-    public Pet findPetById(long id) throws DataAccessException {
+    public Optional<Pet> findPetById(long id) throws DataAccessException {
         return petRepository.findById(id);
     }
 

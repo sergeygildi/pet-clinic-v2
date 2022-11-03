@@ -5,11 +5,13 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @ComponentScan
 @Configuration
 @EnableAutoConfiguration
 @EnableConfigurationProperties
+@EnableJpaRepositories
 public class PetClinicV2Application {
 
     public static void main(String[] args) throws Exception {

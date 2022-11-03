@@ -32,11 +32,9 @@ public class User extends BaseEntity implements UserDetails {
 	private static final long serialVersionUID = 2002390446280945447L;
 
 	@Column(unique = true)
-	@NotEmpty
 	private String username;
 
 	@Column
-	@NotEmpty
 	@Size(min = 5)
 	private String password;
 
@@ -47,12 +45,9 @@ public class User extends BaseEntity implements UserDetails {
 	private String verifyPassword;
 
 	@Column(unique = true)
-	@NotEmpty
-	@Email
 	private String email;
 
 	@Column
-	@NotEmpty
 	private String name;
 
 	@Column(name = "account_expired")
@@ -77,7 +72,7 @@ public class User extends BaseEntity implements UserDetails {
 	@JoinTable(name = "user_authorities", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "authority_id"))
 	private Collection<Authority> authorities;
 
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
 	@ToString.Exclude
 	private UserProfile userProfile;
 
@@ -125,7 +120,7 @@ public class User extends BaseEntity implements UserDetails {
 		}
 		if (authorities == null) {
 			log.warn("authorities is null for user " + this);
-			authorities = new ArrayList<Authority>();
+			authorities = new ArrayList<>();
 		}
 
 		authorities.add(authority);

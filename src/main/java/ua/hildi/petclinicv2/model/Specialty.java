@@ -8,7 +8,7 @@ import java.io.Serial;
 @Table(name = "specialties")
 public class Specialty extends NamedEntity {
 
-	@Serial
-	private static final long serialVersionUID = -3562707899528621917L;
+    @Serial
+    private static final long serialVersionUID = -3562707899528621917L;
 
 }

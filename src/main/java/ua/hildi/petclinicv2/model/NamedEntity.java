@@ -2,7 +2,6 @@ package ua.hildi.petclinicv2.model;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -17,7 +16,6 @@ public class NamedEntity extends BaseEntity {
     private static final long serialVersionUID = -1369326166767704974L;
 
     @Column(name = "name")
-    @NotEmpty
     protected String name;
 
     public NamedEntity() {
@@ -42,11 +40,8 @@ public class NamedEntity extends BaseEntity {
             return false;
         NamedEntity other = (NamedEntity) obj;
         if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
-            return false;
-        return true;
+            return other.name == null;
+        } else return name.equals(other.name);
     }
 
     @Override

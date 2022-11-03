@@ -7,7 +7,6 @@ import javax.persistence.*;
 import java.io.Serial;
 import java.util.Date;
 
-
 @Entity
 @Table(name = "visits")
 public class Visit extends BaseEntity {

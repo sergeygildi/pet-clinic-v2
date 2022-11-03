@@ -2,7 +2,6 @@ package ua.hildi.petclinicv2.model;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
 import org.springframework.core.style.ToStringCreator;
@@ -24,15 +23,12 @@ public class Owner extends Person {
     private static final long serialVersionUID = 447728202717826028L;
 
     @Column(name = "address")
-    @NotEmpty
     private String address;
 
     @Column(name = "city")
-    @NotEmpty
     private String city;
 
     @Column(name = "telephone")
-    @NotEmpty
     @Digits(fraction = 0, integer = 10)
     private String telephone;
 

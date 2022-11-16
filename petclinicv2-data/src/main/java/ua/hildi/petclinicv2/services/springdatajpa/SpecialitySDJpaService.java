@@ -6,8 +6,7 @@ import ua.hildi.petclinicv2.model.Speciality;
 import ua.hildi.petclinicv2.repositories.SpecialtyRepository;
 import ua.hildi.petclinicv2.services.SpecialtyService;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Service
 @Profile("springdatajpa")
@@ -20,10 +19,8 @@ public class SpecialitySDJpaService implements SpecialtyService {
     }
 
     @Override
-    public Set<Speciality> findAll() {
-        Set<Speciality> specialities = new HashSet<>();
-        specialtyRepository.findAll().forEach(specialities::add);
-        return specialities;
+    public List<Speciality> findAll() {
+        return specialtyRepository.findAll();
     }
 
     @Override

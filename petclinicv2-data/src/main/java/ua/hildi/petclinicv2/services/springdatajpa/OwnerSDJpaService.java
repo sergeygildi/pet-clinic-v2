@@ -8,9 +8,7 @@ import ua.hildi.petclinicv2.repositories.PetRepository;
 import ua.hildi.petclinicv2.repositories.PetTypeRepository;
 import ua.hildi.petclinicv2.services.OwnerService;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @Profile("springdatajpa")
@@ -38,10 +36,8 @@ public class OwnerSDJpaService implements OwnerService {
     }
 
     @Override
-    public Set<Owner> findAll() {
-        Set<Owner> owners = new HashSet<>();
-        ownerRepository.findAll().forEach(owners::add);
-        return owners;
+    public List<Owner> findAll() {
+        return ownerRepository.findAll();
     }
 
     @Override

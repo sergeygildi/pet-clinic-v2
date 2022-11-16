@@ -6,8 +6,7 @@ import ua.hildi.petclinicv2.model.PetType;
 import ua.hildi.petclinicv2.repositories.PetTypeRepository;
 import ua.hildi.petclinicv2.services.PetTypeService;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Service
 @Profile("springdatajpa")
@@ -20,10 +19,8 @@ public class PetTypeSDJpaService implements PetTypeService {
     }
 
     @Override
-    public Set<PetType> findAll() {
-        Set<PetType> petTypes = new HashSet<>();
-        petTypeRepository.findAll().forEach(petTypes::add);
-        return petTypes;
+    public List<PetType> findAll() {
+        return petTypeRepository.findAll();
     }
 
     @Override

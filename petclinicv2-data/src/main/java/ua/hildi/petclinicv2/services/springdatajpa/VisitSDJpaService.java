@@ -6,8 +6,7 @@ import ua.hildi.petclinicv2.model.Visit;
 import ua.hildi.petclinicv2.repositories.VisitRepository;
 import ua.hildi.petclinicv2.services.VisitService;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Service
 @Profile("springdatajpa")
@@ -20,10 +19,8 @@ public class VisitSDJpaService implements VisitService {
     }
 
     @Override
-    public Set<Visit> findAll() {
-        Set<Visit> visits = new HashSet<>();
-        visitRepository.findAll().forEach(visits::add);
-        return visits;
+    public List<Visit> findAll() {
+        return visitRepository.findAll();
     }
 
     @Override

@@ -1,10 +1,10 @@
 package ua.hildi.petclinicv2.services;
 
-import java.util.Set;
+import java.util.List;
 
-public interface CrudService<T, ID> {
+public interface JpaService<T, ID> {
 
-    Set<T> findAll();
+    List<T> findAll();
 
     T findById(ID id);
 

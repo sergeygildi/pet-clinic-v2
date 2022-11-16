@@ -12,9 +12,7 @@ import ua.hildi.petclinicv2.repositories.OwnerRepository;
 import ua.hildi.petclinicv2.repositories.PetRepository;
 import ua.hildi.petclinicv2.repositories.PetTypeRepository;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -63,13 +61,13 @@ class VisitSDJpaServiceTest {
     @Test
     @DisplayName("Should return all owners")
     void findAll() {
-        Set<Owner> returnOwnersSet = new HashSet<>();
+        List<Owner> returnOwnersSet = new ArrayList<>();
         returnOwnersSet.add(Owner.builder().id(1L).build());
         returnOwnersSet.add(Owner.builder().id(2L).build());
 
         when(ownerRepository.findAll()).thenReturn(returnOwnersSet);
 
-        Set<Owner> owners = service.findAll();
+        List<Owner> owners = service.findAll();
 
         assertNotNull(owners);
         assertEquals(2, owners.size());

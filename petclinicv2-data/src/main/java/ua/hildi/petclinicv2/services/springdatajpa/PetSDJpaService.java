@@ -3,11 +3,12 @@ package ua.hildi.petclinicv2.services.springdatajpa;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import ua.hildi.petclinicv2.model.Pet;
+import ua.hildi.petclinicv2.model.Vet;
 import ua.hildi.petclinicv2.repositories.PetRepository;
 import ua.hildi.petclinicv2.services.PetService;
 
 import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Service
 @Profile("springdatajpa")
@@ -20,10 +21,8 @@ public class PetSDJpaService implements PetService {
     }
 
     @Override
-    public Set<Pet> findAll() {
-        Set<Pet> pets = new HashSet<>();
-        petRepository.findAll().forEach(pets::add);
-        return pets;
+    public List<Pet> findAll() {
+        return petRepository.findAll();
     }
 
     @Override

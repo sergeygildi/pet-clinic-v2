@@ -5,7 +5,7 @@ import ua.hildi.petclinicv2.model.Owner;
 import java.util.List;
 
 
-public interface OwnerService extends CrudService<Owner, Long> {
+public interface OwnerService extends JpaService<Owner, Long> {
 
     Owner findByLastName(String lastName);
 

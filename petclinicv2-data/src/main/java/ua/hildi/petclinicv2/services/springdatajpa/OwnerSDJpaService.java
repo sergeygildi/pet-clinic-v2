@@ -1,6 +1,5 @@
 package ua.hildi.petclinicv2.services.springdatajpa;
 
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import ua.hildi.petclinicv2.model.Owner;
 import ua.hildi.petclinicv2.repositories.OwnerRepository;
@@ -11,7 +10,6 @@ import ua.hildi.petclinicv2.services.OwnerService;
 import java.util.List;
 
 @Service
-@Profile("springdatajpa")
 public class OwnerSDJpaService implements OwnerService {
 
     private final OwnerRepository ownerRepository;

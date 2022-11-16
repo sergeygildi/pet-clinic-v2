@@ -1,6 +1,5 @@
 package ua.hildi.petclinicv2.services.springdatajpa;
 
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import ua.hildi.petclinicv2.model.Speciality;
 import ua.hildi.petclinicv2.repositories.SpecialtyRepository;
@@ -9,7 +8,6 @@ import ua.hildi.petclinicv2.services.SpecialtyService;
 import java.util.List;
 
 @Service
-@Profile("springdatajpa")
 public class SpecialitySDJpaService implements SpecialtyService {
 
     private final SpecialtyRepository specialtyRepository;

@@ -1,6 +1,8 @@
 ## Pet Clinic V2
+
 ===================
-Spring Pet Clinic example using Spring-Boot, Thymeleaf, AOP, MVC, Embedded Tomcat, Security, and more.
+
+Spring Pet Clinic using Spring-Boot, Thymeleaf, AOP, MVC, JPA, Hibernate, Flyway, Docker and more.
 
 ## Technology stack
 

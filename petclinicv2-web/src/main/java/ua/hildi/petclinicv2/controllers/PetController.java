@@ -1,6 +1,5 @@
 package ua.hildi.petclinicv2.controllers;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
@@ -8,16 +7,19 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import ua.hildi.petclinicv2.model.Owner;
+import ua.hildi.petclinicv2.model.dto.*;
 import ua.hildi.petclinicv2.model.Pet;
-import ua.hildi.petclinicv2.model.PetType;
 import ua.hildi.petclinicv2.services.OwnerService;
 import ua.hildi.petclinicv2.services.PetService;
 import ua.hildi.petclinicv2.services.PetTypeService;
 
 import javax.validation.Valid;
 import java.util.Collection;
+import java.util.stream.Stream;
 
-@Controller
+import static java.util.stream.Collectors.toList;
+
+@RestController
 @RequestMapping("/owners/{ownerId}")
 public class PetController {
 
@@ -26,21 +28,29 @@ public class PetController {
     private final PetService petService;
     private final OwnerService ownerService;
     private final PetTypeService petTypeService;
+    private final Mapper mapper;
 
-    public PetController(PetService petService, OwnerService ownerService, PetTypeService petTypeService) {
+    public PetController(PetService petService, OwnerService ownerService, PetTypeService petTypeService, Mapper mapper) {
         this.petService = petService;
         this.ownerService = ownerService;
         this.petTypeService = petTypeService;
+        this.mapper = mapper;
     }
 
     @ModelAttribute("types")
-    public Collection<PetType> populatePetTypes() {
-        return petTypeService.findAll();
+    public Collection<PetTypeDto> populatePetTypes() {
+        return petTypeService.findAll()
+                .stream()
+                .map(mapper::toPetTypesDto)
+                .collect(toList());
     }
 
     @ModelAttribute("owner")
-    public Owner findOwner(@PathVariable("ownerId") Long ownerId) {
-        return ownerService.findById(ownerId);
+    public OwnerDto findOwner(@PathVariable("ownerDtoId") Long ownerDtoId) {
+        return Stream.of(ownerService.findById(ownerDtoId))
+                .map(mapper::toOwnerDto)
+                .findFirst()
+                .get();
     }
 
     @InitBinder("owner")
@@ -49,7 +59,8 @@ public class PetController {
     }
 
     @GetMapping("/pets/new")
-    public String initCreationForm(Owner owner, Model model) {
+    public String initCreationForm(OwnerCreationDto ownerDto, Model model) {
+        Owner owner = mapper.toOwner(ownerDto);
         Pet pet = new Pet();
         owner.getPets().add(pet);
         pet.setOwner(owner);
@@ -58,7 +69,10 @@ public class PetController {
     }
 
     @PostMapping("/pets/new")
-    public String processCreationForm(Owner owner, @Valid Pet pet, BindingResult result, ModelMap model) {
+    public String processCreationForm(OwnerDto ownerDto, @Valid PetDto petDto, BindingResult result, ModelMap model) {
+        Pet pet = mapper.toPet(petDto);
+        Owner owner = mapper.toOwner(ownerDto);
+
         if (StringUtils.hasLength(pet.getName()) && pet.isNew() && owner.getPet(pet.getName(), true) != null) {
             result.rejectValue("name", "duplicate", "already exists");
         }
@@ -80,7 +94,10 @@ public class PetController {
     }
 
     @PostMapping("/pets/{petId}/edit")
-    public String processUpdateForm(@Valid Pet pet, BindingResult result, Owner owner, Model model) {
+    public String processUpdateForm(@Valid PetDto petDto, BindingResult result, OwnerDto ownerDto, Model model) {
+        Pet pet = mapper.toPet(petDto);
+        Owner owner = mapper.toOwner(ownerDto);
+
         if (result.hasErrors()) {
             pet.setOwner(owner);
             model.addAttribute("pet", pet);

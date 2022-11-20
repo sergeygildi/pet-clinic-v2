@@ -16,6 +16,7 @@ import ua.hildi.petclinicv2.services.PetService;
 import ua.hildi.petclinicv2.services.PetTypeService;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -62,7 +63,7 @@ class PetControllerTest {
     @Test
     void initCreationForm() throws Exception {
         when(ownerService.findById(anyLong())).thenReturn(owner);
-        when(petTypeService.findAll()).thenReturn(petTypes);
+        when(petTypeService.findAll()).thenReturn((List<PetType>) petTypes);
 
         mockMvc.perform(get("/owners/1/pets/new"))
                 .andExpect(status().isOk())
@@ -74,7 +75,7 @@ class PetControllerTest {
     @Test
     void processCreationForm() throws Exception {
         when(ownerService.findById(anyLong())).thenReturn(owner);
-        when(petTypeService.findAll()).thenReturn(petTypes);
+        when(petTypeService.findAll()).thenReturn((List<PetType>) petTypes);
 
         mockMvc.perform(post("/owners/1/pets/new"))
                 .andExpect(status().is3xxRedirection())
@@ -86,7 +87,7 @@ class PetControllerTest {
     @Test
     void initUpdateForm() throws Exception {
         when(ownerService.findById(anyLong())).thenReturn(owner);
-        when(petTypeService.findAll()).thenReturn(petTypes);
+        when(petTypeService.findAll()).thenReturn((List<PetType>) petTypes);
         when(petService.findById(anyLong())).thenReturn(Pet.builder().id(2L).build());
 
         mockMvc.perform(get("/owners/1/pets/2/edit"))
@@ -99,7 +100,7 @@ class PetControllerTest {
     @Test
     void processUpdateForm() throws Exception {
         when(ownerService.findById(anyLong())).thenReturn(owner);
-        when(petTypeService.findAll()).thenReturn(petTypes);
+        when(petTypeService.findAll()).thenReturn((List<PetType>) petTypes);
 
         mockMvc.perform(post("/owners/1/pets/2/edit"))
                 .andExpect(status().is3xxRedirection())

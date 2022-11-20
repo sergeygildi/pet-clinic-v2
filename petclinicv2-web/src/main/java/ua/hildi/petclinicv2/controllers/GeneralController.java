@@ -41,7 +41,7 @@ public class GeneralController {
         mav.addObject("exception", e);
         mav.addObject("timestamp", new Date());
         mav.addObject("url", req.getRequestURL());
-        mav.setViewName("exce ption");
+        mav.setViewName("exception");
         return mav;
     }
 

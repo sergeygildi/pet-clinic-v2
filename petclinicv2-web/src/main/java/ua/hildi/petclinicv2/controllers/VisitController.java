@@ -6,6 +6,8 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import ua.hildi.petclinicv2.model.Pet;
 import ua.hildi.petclinicv2.model.Visit;
+import ua.hildi.petclinicv2.model.dto.VisitDto;
+import ua.hildi.petclinicv2.model.dto.Mapper;
 import ua.hildi.petclinicv2.services.PetService;
 import ua.hildi.petclinicv2.services.VisitService;
 
@@ -19,10 +21,12 @@ public class VisitController {
 
     private final VisitService visitService;
     private final PetService petService;
+    private final Mapper mapper;
 
-    public VisitController(VisitService visitService, PetService petService) {
+    public VisitController(VisitService visitService, PetService petService, Mapper mapper) {
         this.visitService = visitService;
         this.petService = petService;
+        this.mapper = mapper;
     }
 
     @InitBinder
@@ -38,13 +42,13 @@ public class VisitController {
     }
 
     @ModelAttribute("visit")
-    public Visit loadPetWithVisit(@PathVariable("petId") Long petId, Map<String, Object> model) {
+    public VisitDto loadPetWithVisit(@PathVariable("petId") Long petId, Map<String, Object> model) {
         Pet pet = petService.findById(petId);
         model.put("pet", pet);
         Visit visit = new Visit();
         pet.getVisits().add(visit);
         visit.setPet(pet);
-        return visit;
+        return mapper.toVisitDto(visit);
     }
 
     @GetMapping("/owners/*/pets/{petId}/visits/new")
@@ -53,7 +57,8 @@ public class VisitController {
     }
 
     @PostMapping("/owners/{ownerId}/pets/{petId}/visits/new")
-    public String processNewVisitForm(@Valid Visit visit, BindingResult result) {
+    public String processNewVisitForm(@Valid VisitDto visitDto, BindingResult result) {
+        Visit visit = mapper.toVisit(visitDto);
         if (result.hasErrors()) {
             return "pets/createOrUpdateVisitForm";
         } else {

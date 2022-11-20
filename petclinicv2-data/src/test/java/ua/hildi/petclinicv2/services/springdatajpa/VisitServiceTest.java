@@ -11,6 +11,7 @@ import ua.hildi.petclinicv2.model.Owner;
 import ua.hildi.petclinicv2.repositories.OwnerRepository;
 import ua.hildi.petclinicv2.repositories.PetRepository;
 import ua.hildi.petclinicv2.repositories.PetTypeRepository;
+import ua.hildi.petclinicv2.services.OwnerService;
 
 import java.util.*;
 
@@ -20,8 +21,8 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-@DisplayName("VisitSDJpaServiceTest")
-class VisitSDJpaServiceTest {
+@DisplayName("VisitServiceTest")
+class VisitServiceTest {
 
     public static final String LAST_NAME = "Smith";
     @Mock
@@ -34,14 +35,13 @@ class VisitSDJpaServiceTest {
     PetTypeRepository petTypeRepository;
 
     @InjectMocks
-    OwnerSDJpaService service;
+    OwnerService service;
 
     Owner returnOwner;
 
     @BeforeEach
     void setUp() {
         returnOwner = Owner.builder()
-                .id(1L)
                 .lastName(LAST_NAME)
                 .build();
     }

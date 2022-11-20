@@ -7,6 +7,8 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ua.hildi.petclinicv2.model.Owner;
+import ua.hildi.petclinicv2.model.dto.Mapper;
+import ua.hildi.petclinicv2.model.dto.OwnerDto;
 import ua.hildi.petclinicv2.services.OwnerService;
 
 import javax.validation.Valid;
@@ -18,9 +20,11 @@ public class OwnerController {
     private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
 
     private final OwnerService ownerService;
+    private final Mapper mapper;
 
-    public OwnerController(OwnerService ownerService) {
+    public OwnerController(OwnerService ownerService, Mapper mapper) {
         this.ownerService = ownerService;
+        this.mapper = mapper;
     }
 
     @InitBinder
@@ -36,7 +40,8 @@ public class OwnerController {
     }
 
     @GetMapping
-    public String processFindForm(Owner owner, BindingResult result, Model model) {
+    public String processFindForm(OwnerDto ownerDto, BindingResult result, Model model) {
+        Owner owner = mapper.toOwner(ownerDto);
         if (owner.getLastName() == null) {
             owner.setLastName("");
         }
@@ -69,7 +74,8 @@ public class OwnerController {
     }
 
     @PostMapping("/new")
-    public String processCreationForm(@Valid Owner owner, BindingResult result) {
+    public String processCreationForm(@Valid OwnerDto ownerDto, BindingResult result) {
+        Owner owner = mapper.toOwner(ownerDto);
         if (result.hasErrors()) {
             return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
         } else {
@@ -85,7 +91,9 @@ public class OwnerController {
     }
 
     @PostMapping("/{ownerId}/edit")
-    public String processUpdateOwnerForm(@Valid Owner owner, BindingResult result, @PathVariable Long ownerId) {
+    public String processUpdateOwnerForm(@Valid OwnerDto ownerDto, BindingResult result, @PathVariable Long ownerId) {
+        Owner owner = mapper.toOwner(ownerDto);
+
         if (result.hasErrors()) {
             return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
         } else {

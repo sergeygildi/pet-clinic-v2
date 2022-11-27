@@ -2,6 +2,7 @@
 <body>
   <form>
     <th:block th:fragment="input (label, name, type)">
+      <!--/*@thymesVar id="valid" type="javax.validation.Validation"*/-->
       <div th:with="valid=${!#fields.hasErrors(name)}"
         th:class="${'form-group' + (valid ? '' : ' has-error')}"
         class="form-group">

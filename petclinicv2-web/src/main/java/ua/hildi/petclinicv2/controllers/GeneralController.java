@@ -1,6 +1,7 @@
 package ua.hildi.petclinicv2.controllers;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -25,14 +26,6 @@ public class GeneralController {
         return "redirect:/" + resource;
     }
 
-    @RequestMapping("/unauthorized")
-    public ModelAndView accessDenied() {
-        ModelAndView mav = new ModelAndView();
-        mav.addObject("timestamp", new Date());
-        mav.setViewName("unauthorized");
-        return mav;
-    }
-
     @ExceptionHandler(Exception.class)
     public ModelAndView handleException(HttpServletRequest req, Exception e) {
         log.warn("In handleException", e);
@@ -46,6 +39,7 @@ public class GeneralController {
     }
 
     @GetMapping("/oups")
+    @ResponseStatus(HttpStatus.NOT_IMPLEMENTED)
     public String triggerException() {
         return "notimplemented";
     }

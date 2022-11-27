@@ -1,0 +1,32 @@
+version: '3.9'
+services:
+  pet-clinic-v2:
+    build:
+      context: .
+    container_name: pet-clinic-v2
+    image: 'clinic'
+    ports:
+      - "8080:8080"
+    depends_on:
+      clinic-db:
+        condition: service_healthy
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://PostgreSQL:5432/clinic
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+  clinic-db:
+    container_name: dev-postgres
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=clinic
+    healthcheck:
+      test: ["CMD-SHELL","pg_isready - U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5

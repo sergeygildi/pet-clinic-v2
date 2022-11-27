@@ -4,7 +4,8 @@ import org.springframework.stereotype.Service;
 import ua.hildi.petclinicv2.model.PetType;
 import ua.hildi.petclinicv2.repositories.PetTypeRepository;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class PetTypeService {
@@ -15,8 +16,8 @@ public class PetTypeService {
         this.petTypeRepository = petTypeRepository;
     }
 
-    public List<PetType> findAll() {
-        return petTypeRepository.findAll();
+    public Set<PetType> findAll() {
+        return new HashSet<>(petTypeRepository.findAll());
     }
 
     public PetType findById(Long aLong) {

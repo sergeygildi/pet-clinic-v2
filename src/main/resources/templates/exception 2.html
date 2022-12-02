@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+
+
+<body role="document">
+<div class="container" role="main">
+    <div class="starter-template">
+        <h2>We're sorry!</h2>
+        <img src="../static/images/pets.png" th:src="@{/images/pets.png}"/>
+        <h3>Something not good happened...</h3>
+    </div>
+    <!--/*@thymesVar id="exception" type="java.lang.Exception"*/-->
+    <p th:text="${exception.message}">The exception message...</p>
+
+    <p th:text="${exception}">The exception...</p>
+
+    <div>Please contact the operator with the above information.</div>
+</div>
+
+</body>
+
+</html>
